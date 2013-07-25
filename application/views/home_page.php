@@ -26,36 +26,25 @@
 	    	<div class="span12">
 	        	<div class="span6">
 	            	<div class="area">
-	                    <form class="form-horizontal">
+	                    <form class="form-horizontal" action="users/login" method="post">
 	                        <div class="heading">
 	                            <h4 class="form-heading">Sign In</h4>
 	                        </div>
 	                        <div class="control-group">
-	                            <label class="control-label" for="inputCompanyName">Company Name</label>
+	                            <label class="control-label" for="email">email</label>
 	                            <div class="controls">
-	                                <input type="text" id="inputCompanyName" placeholder="E.g. Some Software Pvt. Ltd.">
+	                                <input type="text" id="email" name="email">
 	                            </div>
 	                        </div>
 	                        <div class="control-group">
-	                            <label class="control-label" for="inputUsername">Username</label>
+	                            <label class="control-label" for="password">Password</label>
 	                            <div class="controls">
-	                                <input type="text" id="inputUsername" placeholder="E.g. ashwinhegde">
-	                            </div>
-	                        </div>
-	                        <div class="control-group">
-	                            <label class="control-label" for="inputPassword">Password</label>
-	                            <div class="controls">
-	                                <input type="password" id="inputPassword" placeholder="Min. 8 Characters">
+	                                <input type="password" id="password" name="password">
 	                            </div>
 	                        </div>
 	                        <div class="control-group">
 	                            <div class="controls">
-	                                <label class="checkbox">
-	                                    <input type="checkbox"> Keep me signed in   ¦
-	                                    <a href="#" class="btn btn-link">Forgot my password</a>
-	                                </label>
 	                                <button type="submit" class="btn btn-success">Sign In</button>
-	                                <button type="button" class="btn">Help</button>
 	                            </div>
 	                        </div>	
 	                    </form>	

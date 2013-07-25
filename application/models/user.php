@@ -21,4 +21,17 @@ class User extends CI_Model {
 	
 		return $this->db->insert('users', $user);
 	}
+
+	public function get_user($user_info = NULL)
+	{
+		if($user_info != NULL)
+		{
+			return $this->db->where('email', $user_info['email'])
+						->where('password', $user_info['password'])
+						->get('users')
+						->row();
+		}
+		else
+			return $this->db->get('users')->result_array();
+	}
 }

@@ -49,8 +49,54 @@ class Users extends Main {
 
 		echo json_encode($data);
 	}
+	public function login()
+	{	
+		$post_data = $this->input->post();
+		$this->load->library('form_validation');
 
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('password', 'Password', 'trim|required');
+		
+		if($this->form_validation->run() === FALSE)
+		{
+			$data['status'] = FALSE;
+			$data['errors'] = validation_errors();
+		}
+		else
+		{	
+			$user = array(
+				'email' => $post_data["email"], 
+				'password' => md5(HASH_START . $post_data["password"] . HASH_END)
+			);
 
+			$this->load->model('User');
+			$user = $this->User->get_user($user);
+
+			if(count($user) > 0)
+			{	
+				$user_session = array(
+					'user_id' => $user->id,
+					'email' => $user->email,
+					'user_level' => $user->user_level,
+					'first_name' => $user->first_name,
+					'last_name' => $user->last_name,
+					'is_logged_in' => TRUE
+				);
+
+				$this->session->set_userdata('user_session', $user_session);
+						
+				$data['status'] = TRUE;
+				redirect(base_url('main'));
+			}
+			else
+			{
+				$data['status'] = FALSE;
+				$data["errors"] = "Invalid email and Password! Please Try Again!";
+			}
+		}
+		
+		echo json_encode($data);
+	}
 }
 
 /* end of file */
