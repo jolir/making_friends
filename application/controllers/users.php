@@ -11,46 +11,49 @@ class Users extends Main {
 
 	public function create_user()
 	{
-		$post_data = $this->input->post();
-
-		if(isset($post_data['form_action']) && $post_data['form_action'] == "create_user")
+		if($this->is_login())
+			redirect('users/dashboard');
+		else
 		{
-			$this->load->model('User');
-			$this->load->library('form_validation');
+			$post_data = $this->input->post();
 
-			$this->form_validation->set_rules('first_name', 'First Name', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('last_name', 'Last Name', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[users.email]');
-			$this->form_validation->set_rules('password', 'Password', 'trim|required');
-			$this->form_validation->set_rules('password_confirmation', 'Confirm Password', 'trim|required|matches[password]');
-
-			if($this->form_validation->run() === FALSE)
-			{
-				$data['status'] = FALSE;
-				$data['errors'] = validation_errors();
-			}
-			else
+			if(isset($post_data['form_action']) && $post_data['form_action'] == "create_user")
 			{
 				$this->load->model('User');
-				$create_user = $this->User->create_user($post_data);
+				$this->load->library('form_validation');
 
-				if($create_user)
+				$this->form_validation->set_rules('first_name', 'First Name', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('last_name', 'Last Name', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[users.email]');
+				$this->form_validation->set_rules('password', 'Password', 'trim|required');
+				$this->form_validation->set_rules('password_confirmation', 'Confirm Password', 'trim|required|matches[password]');
+
+				if($this->form_validation->run() === FALSE)
 				{
-					$data['status'] = TRUE;
-					$data['message'] = "Successfully created a new user!";
+					$data['status'] = FALSE;
+					$data['errors'] = validation_errors();
 				}
 				else
 				{
-					$data['status'] = FALSE;
-					$data['errors'] = "Database error! Please sign up again later!";
-				}
-			}
-			echo json_encode($data);
-		}
-		else
-			$this->load->view('home_page');
+					$this->load->model('User');
+					$create_user = $this->User->create_user($post_data);
 
-		
+					if($create_user)
+					{
+						$data['status'] = TRUE;
+						$data['message'] = "Successfully created a new user!";
+					}
+					else
+					{
+						$data['status'] = FALSE;
+						$data['errors'] = "Database error! Please sign up again later!";
+					}
+				}
+				echo json_encode($data);
+			}
+			else
+				$this->load->view('home_page');
+		}	
 	}
 	public function login()
 	{	
@@ -107,7 +110,18 @@ class Users extends Main {
 
 	public function dashboard()
 	{
-		$this->load->view('dashboard');
+		if($this->is_login())
+		{
+			$this->load->model('User');
+
+			$this->view_data['users'] = $this->User->get_user();
+			$this->view_data['logged_in_user'] = $this->user_session;
+
+			$this->load->view('dashboard', $this->view_data);			
+		}
+		else
+			redirect(base_url('login'));
+
 	}
 }
 

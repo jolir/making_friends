@@ -40,7 +40,7 @@
 
 $route['default_controller'] = "main";
 $route['login'] = 'users/login';
-$route['register'] = 'users/register';
+$route['register'] = 'users/create_user';
 $route['logout'] = 'main/logout';
 $route['404_override'] = '';
 
