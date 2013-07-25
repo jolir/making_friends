@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once('main.php');
-class Users extends Main {
+class Friends extends Main {
 	
 	public function __construct()
 	{
@@ -17,7 +17,7 @@ class Users extends Main {
 		{
 			$this->load->model('Friend');
 
-			$add_friend = $this->Friend->add_fried($post_data);
+			$add_friend = $this->Friend->add_friend($post_data);
 
 			if($add_friend)
 			{

@@ -4,6 +4,21 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/css/bootstrap.min.css">
 	<script type="text/javascript" src="<?= base_url(); ?>assets/js/jquery.js"></script>
 	<script type="text/javascript" src="<?= base_url(); ?>assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.add_friend').submit(function(){
+				var form = $(this);
+				$.post(form.attr('action'), form.serialize(), function(data){
+					console.log(data);
+					if(data.status)
+						form.children('.btn').replaceWith("<button type='submit' class='btn btn-primary' disabled>Friend Invite Sent</button>");
+					else
+						$("#notify").html(data.errors);
+				}, 'json');
+				return false;
+			});
+		});
+	</script>
 </head>
 <body>
 	<div class="navbar navbar-inverse">
@@ -59,23 +74,35 @@
 				</tr>
 			</thead>
 			<tbody>
-<? 	foreach($users as $user) 
+<? 	foreach($users as $key => $user) 
 	{ ?>
+
 				<tr>
 					<td><?= $user['first_name']; ?> <?= $user['last_name']; ?></td>
 					<td><?= $user['email']; ?></td>
 					<td>
-						<form action="<?= base_url(); ?>friends/add_friend" method="post">
+<?  	if(isset($friends[$key]) && $friends[$key]['friend_id'] == $user['id'])
+    	{ ?>
+    					<button type='submit' class='btn btn-primary' disabled>Friend Invite Sent</button>
+<? 		} 
+		else 
+		{ ?>
+						<form action="<?= base_url(); ?>friends/add_friend" method="post" class="add_friend">
 							<input type="hidden" name="form_action" value="add_friend">
 							<input type="hidden" name="user_id" value="<?= $logged_in_user['user_id']; ?>">
 							<input type="hidden" name="friend_id" value="<?= $user['id']; ?>">
 							<button type="submit" class="btn btn-primary">Add as Friend</button>
 						</form>
+<?  	} ?>	
 					</td>
 				</tr>
 <? 	} ?>
 			</tbody>
 		</table>
 	</div>
+	<? var_dump($friends); var_dump($users); ?>
 </body>
 </html>
+						
+
+	

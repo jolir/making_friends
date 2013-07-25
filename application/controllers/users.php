@@ -113,8 +113,10 @@ class Users extends Main {
 		if($this->is_login())
 		{
 			$this->load->model('User');
+			$this->load->model('Friend');
 
-			$this->view_data['users'] = $this->User->get_user();
+			$this->view_data['users'] = $this->User->get_user($this->user_session['user_id']);
+			$this->view_data['friends'] = $this->Friend->get_friend($this->user_session['user_id']);
 			$this->view_data['logged_in_user'] = $this->user_session;
 
 			$this->load->view('dashboard', $this->view_data);			

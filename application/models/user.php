@@ -26,10 +26,17 @@ class User extends CI_Model {
 	{
 		if($user_info != NULL)
 		{
-			return $this->db->where('email', $user_info['email'])
-						->where('password', $user_info['password'])
-						->get('users')
-						->row();
+			if(is_array($user_info))
+			{
+				return $this->db->where('email', $user_info['email'])
+							->where('password', $user_info['password'])
+							->get('users')
+							->row();
+			}
+			else
+				return $this->db->where('id !=', $user_info)
+							->get('users')
+							->result_array();
 		}
 		else
 			return $this->db->get('users')->result_array();
