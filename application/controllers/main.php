@@ -14,7 +14,7 @@ class Main extends CI_Controller {
 	public function index()
 	{	
 		if($this->is_login())
-			redirect(base_url('/users'));
+			redirect(base_url('users/dashboard'));
 		else
 			$this->load->view('home_page');	
 	}

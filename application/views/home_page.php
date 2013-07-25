@@ -17,6 +17,17 @@
 				}, 'json');
 				return false;
 			});
+			$('#login').submit(function(){
+				var form = $(this);
+				$.post(form.attr('action'), form.serialize(), function(data){
+					console.log(data);
+					if(data.status)
+						window.location = data.redirect_url
+					else
+						$("#login_notify").html(data.errors);
+				}, 'json');
+				return false;
+			});
 		});
 	</script>
 </head>
@@ -26,7 +37,7 @@
 	    	<div class="span12">
 	        	<div class="span6">
 	            	<div class="area">
-	                    <form class="form-horizontal" action="users/login" method="post">
+	                    <form class="form-horizontal" action="users/login" method="post" id="login">
 	                        <div class="heading">
 	                            <h4 class="form-heading">Sign In</h4>
 	                        </div>
@@ -34,6 +45,7 @@
 	                            <label class="control-label" for="email">email</label>
 	                            <div class="controls">
 	                                <input type="text" id="email" name="email">
+	                                <input type="hidden" name="form_action" value="login">
 	                            </div>
 	                        </div>
 	                        <div class="control-group">
@@ -47,6 +59,7 @@
 	                                <button type="submit" class="btn btn-success">Sign In</button>
 	                            </div>
 	                        </div>	
+	                        <div id="login_notify"></div>
 	                    </form>	
 					</div>                           
 	            </div>
