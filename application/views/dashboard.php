@@ -62,6 +62,14 @@
 					<th>Action</th>
 				</tr>
 			</thead>
+			<tbody>
+<? 	foreach($notifications as $notification)
+	{ ?>
+				<tr>
+					<td><?= $notification['first_name']; ?> <?= $notification['last_name']; ?></td>
+				</tr>
+<? 	} ?>
+			</tbody>
 		</table>
 
 		<h4>People you may want to add as friend:</h4>
@@ -76,7 +84,6 @@
 			<tbody>
 <? 	foreach($users as $key => $user) 
 	{ ?>
-
 				<tr>
 					<td><?= $user['first_name']; ?> <?= $user['last_name']; ?></td>
 					<td><?= $user['email']; ?></td>
@@ -100,7 +107,6 @@
 			</tbody>
 		</table>
 	</div>
-	<? var_dump($friends); var_dump($users); ?>
 </body>
 </html>
 						

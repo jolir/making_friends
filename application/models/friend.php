@@ -25,4 +25,11 @@ class Friend extends CI_Model {
 		return $this->db->where('user_id', $friend_info)
 						->get('friends')->result_array();
 	}
+
+	public function get_notification($notification_info)
+	{
+		return $this->db->where('friend_id', $notification_info)
+						->join('users', 'friends.user_id = users.id', 'LEFT OUTER')
+						->get('friends')->result_array();
+	}
 }
