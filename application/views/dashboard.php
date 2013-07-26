@@ -63,12 +63,6 @@
 				</tr>
 			</thead>
 			<tbody>
-<? 	foreach($notifications as $notification)
-	{ ?>
-				<tr>
-					<td><?= $notification['first_name']; ?> <?= $notification['last_name']; ?></td>
-				</tr>
-<? 	} ?>
 			</tbody>
 		</table>
 
@@ -92,6 +86,10 @@
     	{ ?>
     					<button type='submit' class='btn btn-primary' disabled>Friend Invite Sent</button>
 <? 		} 
+		elseif(isset($friends[$key]) && $friends[$key]['user_id'] == $user['id'])
+		{ ?>
+						<button type='submit' class='btn btn-success' disabled>This User Invited you as friend.</button>
+<?		}
 		else 
 		{ ?>
 						<form action="<?= base_url(); ?>friends/add_friend" method="post" class="add_friend">
@@ -103,7 +101,8 @@
 <?  	} ?>	
 					</td>
 				</tr>
-<? 	} ?>
+
+<?  	} ?>
 			</tbody>
 		</table>
 	</div>

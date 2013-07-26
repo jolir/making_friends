@@ -41,4 +41,9 @@ class User extends CI_Model {
 		else
 			return $this->db->get('users')->result_array();
 	}
+
+	// public function get_notification($notification_info)
+	// {
+	// 	return
+	// }
 }
