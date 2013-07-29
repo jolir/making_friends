@@ -98,13 +98,16 @@
 			<tbody>
 <!-- 			<button type='submit' class='btn btn-success' disabled>This User Invited you as friend.</button> -->
 <? 	foreach($friends as $friend)
-   	{ ?>
+   	{ 
+   		if($friend['friend_id'] != $logged_in_user['user_id'])
+   		{	?>
    				<tr>
    					<td><?= $friend['first_name']; ?> <?= $friend['last_name']; ?></td>
    					<td><?= $friend['email']; ?></td>
    					<td><button type='submit' class='btn btn-primary' disabled>Friend Invite Sent</button></td>
    				</tr>
-<?	} 
+<? 		}
+	} 
 
  	foreach($users as $user) 
 	{ 

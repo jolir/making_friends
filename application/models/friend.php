@@ -22,8 +22,9 @@ class Friend extends CI_Model {
 
 	public function get_friend($friend_info)
 	{
-		return $this->db->select('friends.friend_id as friend_id, first_name, last_name, email')
+		return $this->db->select('friends.friend_id as friend_id, friends.user_id as user_id, first_name, last_name, email')
 						->where('user_id', $friend_info)
+						->or_where('friend_id', $friend_info)
 						->join('users', 'users.id = friends.friend_id')
 						->get('friends')->result_array();
 	}

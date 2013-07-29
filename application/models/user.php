@@ -40,11 +40,12 @@ class User extends CI_Model {
 					foreach($friend_info as $info)
 					{
 						$friends[] = $info['friend_id'];
+						$invites[] = $info['user_id'];
 					}
-					
 					return $this->db->where_not_in('id', $friends)
-								->get('users')
-								->result_array();
+									->where_not_in('id', $invites)
+									->get('users')
+									->result_array();
 				}
 				else
 					return $this->db->get('users')->result_array();
