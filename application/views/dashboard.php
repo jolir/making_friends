@@ -53,6 +53,19 @@
 		<!--/.navbar-inner -->
 	</div>
 	<!--/.navbar -->
+	<? var_dump($friends); ?>
+<? foreach($users as $key => $user)
+{
+	foreach($friends as $friend)
+	{
+		if($user['id'] == $friend['friend_id'])
+		{
+			echo $user['first_name'] . "<br>";
+		}
+	}
+
+}
+?>
 	<div id="wrapper" style="width: 960px; margin:0px auto;">
 		<h4>Notifications:</h4>
 		<table class="table table-hover">
@@ -76,33 +89,26 @@
 				</tr>
 			</thead>
 			<tbody>
-<? 	foreach($users as $key => $user) 
+<!-- 			<button type='submit' class='btn btn-success' disabled>This User Invited you as friend.</button> -->
+<? 	foreach($users as $user) 
 	{ ?>
 				<tr>
-					<td><?= $user['first_name']; ?> <?= $user['last_name']; ?></td>
+					<td><?= $user['id']; ?><?= $user['first_name']; ?> <?= $user['last_name']; ?></td>
 					<td><?= $user['email']; ?></td>
 					<td>
-<?  	if(isset($friends[$key]) && $friends[$key]['friend_id'] == $user['id'])
-    	{ ?>
-    					<button type='submit' class='btn btn-primary' disabled>Friend Invite Sent</button>
-<? 		} 
-		elseif(isset($friends[$key]) && $friends[$key]['user_id'] == $user['id'])
-		{ ?>
-						<button type='submit' class='btn btn-success' disabled>This User Invited you as friend.</button>
-<?		}
-		else 
-		{ ?>
+
+						<button type='submit' class='btn btn-primary' disabled>Friend Invite Sent</button>	
+
 						<form action="<?= base_url(); ?>friends/add_friend" method="post" class="add_friend">
 							<input type="hidden" name="form_action" value="add_friend">
 							<input type="hidden" name="user_id" value="<?= $logged_in_user['user_id']; ?>">
 							<input type="hidden" name="friend_id" value="<?= $user['id']; ?>">
 							<button type="submit" class="btn btn-primary">Add as Friend</button>
-						</form>
-<?  	} ?>	
+						</form>	
+
+<?	} ?>
 					</td>
 				</tr>
-
-<?  	} ?>
 			</tbody>
 		</table>
 	</div>

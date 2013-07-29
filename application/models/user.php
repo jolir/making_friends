@@ -22,7 +22,7 @@ class User extends CI_Model {
 		return $this->db->insert('users', $user);
 	}
 
-	public function get_user($user_info = NULL)
+	public function get_user($user_info = NULL, $friend_info = NULL)
 	{
 		if($user_info != NULL)
 		{
@@ -33,10 +33,17 @@ class User extends CI_Model {
 							->get('users')
 							->row();
 			}
-			else
-				return $this->db->where('id !=', $user_info)
+			elseif(is_array($friend_info))
+			{
+				foreach($friend_info as $info)
+				{
+					$friends[] = $info['friend_id'];
+				}
+				
+				return $this->db->where_not_in('id', $friends)
 							->get('users')
 							->result_array();
+			}
 		}
 		else
 			return $this->db->get('users')->result_array();
