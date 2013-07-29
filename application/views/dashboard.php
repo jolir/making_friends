@@ -17,6 +17,26 @@
 				}, 'json');
 				return false;
 			});
+
+			$('.accept_friend').submit(function(){
+				var form = $(this);
+				$.post(form.attr('action'), form.serialize(), function(data){
+					if(data.status)
+						form.children('.btn').replaceWith("<button type='submit' class='btn btn-success' disabled>You are now friends!</button>");
+						form.siblings().html("");
+				}, 'json');
+				return false;
+			});
+
+			$('.decline_friend').submit(function(){
+				var form = $(this);
+				$.post(form.attr('action'), form.serialize(), function(data){
+					if(data.status)
+						form.children('.btn').replaceWith("<button type='submit' class='btn btn-danger' disabled>Friend Request declined!</button>");
+						form.siblings().html("");
+				}, 'json');
+				return false;
+			});
 		});
 	</script>
 </head>
@@ -54,6 +74,8 @@
 	</div>
 	<!--/.navbar -->
 	<div id="wrapper" style="width: 960px; margin:0px auto;">
+<? 	if(!empty($notifications))
+	{ ?>
 		<h4>Notifications:</h4>
 		<table class="table table-hover">
 			<thead>
@@ -63,29 +85,29 @@
 				</tr>
 			</thead>
 			<tbody>
-<? 	foreach($notifications as $notification)
-	{ ?>
+<? 		foreach($notifications as $notification)
+		{ ?>
 				<tr>
 					<td><?= $notification['first_name'] . " " . $notification['last_name']; ?></td>
 					<td>
-						<form action="<?= base_url(); ?>friends/add_friend" method="post" class="add_friend" style="display:inline;">
-							<input type="hidden" name="form_action" value="add_friend">
-							<input type="hidden" name="user_id" value="<?= $logged_in_user['user_id']; ?>">
-							<input type="hidden" name="friend_id" value="<?= $notification['friend_id']; ?>">
+						<form action="<?= base_url(); ?>friends/add_friend" method="post" class="accept_friend" style="display:inline;">
+							<input type="hidden" name="form_action" value="accept_friend">
+							<input type="hidden" name="friend_id" value="<?= $logged_in_user['user_id']; ?>">
+							<input type="hidden" name="user_id" value="<?= $notification['user_id']; ?>">
 							<button type="submit" class="btn btn-success">Accept</button>
 						</form>	
-						<form action="<?= base_url(); ?>friends/add_friend" method="post" class="add_friend" style="display:inline;">
-							<input type="hidden" name="form_action" value="add_friend">
-							<input type="hidden" name="user_id" value="<?= $logged_in_user['user_id']; ?>">
-							<input type="hidden" name="friend_id" value="<?= $notification['friend_id']; ?>">
+						<form action="<?= base_url(); ?>friends/decline_friend" method="post" class="decline_friend" style="display:inline;">
+							<input type="hidden" name="form_action" value="decline_friend">
+							<input type="hidden" name="friend_id" value="<?= $logged_in_user['user_id']; ?>">
+							<input type="hidden" name="user_id" value="<?= $notification['user_id']; ?>">
 							<button type="submit" class="btn btn-danger">Decline</button>
 						</form>	
 					</td>
 				</tr>	
-<?	} ?>
+<?		} ?>
 			</tbody>
 		</table>
-
+<? 	} ?>
 		<h4>People you may want to add as friend:</h4>
 		<table class="table table-hover">
 			<thead>
@@ -96,10 +118,9 @@
 				</tr>
 			</thead>
 			<tbody>
-<!-- 			<button type='submit' class='btn btn-success' disabled>This User Invited you as friend.</button> -->
 <? 	foreach($friends as $friend)
    	{ 
-   		if($friend['friend_id'] != $logged_in_user['user_id'])
+   		if($friend['friend_id'] != $logged_in_user['user_id'] && $friend['status'] != FRIENDS)
    		{	?>
    				<tr>
    					<td><?= $friend['first_name']; ?> <?= $friend['last_name']; ?></td>

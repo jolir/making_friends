@@ -27,7 +27,7 @@ define('DIR_WRITE_MODE', 0777);
 define('HASH_START', 123456);
 define('HASH_END', 654321);
 define('PENDING_FRIEND', 1);
-define('NOT_FRIEND', 0);
+define('FRIENDS', 2);
 
 /*
 |--------------------------------------------------------------------------
