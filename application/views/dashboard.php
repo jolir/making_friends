@@ -53,19 +53,6 @@
 		<!--/.navbar-inner -->
 	</div>
 	<!--/.navbar -->
-	<? var_dump($friends); ?>
-<? foreach($users as $key => $user)
-{
-	foreach($friends as $friend)
-	{
-		if($user['id'] == $friend['friend_id'])
-		{
-			echo $user['first_name'] . "<br>";
-		}
-	}
-
-}
-?>
 	<div id="wrapper" style="width: 960px; margin:0px auto;">
 		<h4>Notifications:</h4>
 		<table class="table table-hover">
@@ -76,6 +63,26 @@
 				</tr>
 			</thead>
 			<tbody>
+<? 	foreach($notifications as $notification)
+	{ ?>
+				<tr>
+					<td><?= $notification['first_name'] . " " . $notification['last_name']; ?></td>
+					<td>
+						<form action="<?= base_url(); ?>friends/add_friend" method="post" class="add_friend" style="display:inline;">
+							<input type="hidden" name="form_action" value="add_friend">
+							<input type="hidden" name="user_id" value="<?= $logged_in_user['user_id']; ?>">
+							<input type="hidden" name="friend_id" value="<?= $notification['friend_id']; ?>">
+							<button type="submit" class="btn btn-success">Accept</button>
+						</form>	
+						<form action="<?= base_url(); ?>friends/add_friend" method="post" class="add_friend" style="display:inline;">
+							<input type="hidden" name="form_action" value="add_friend">
+							<input type="hidden" name="user_id" value="<?= $logged_in_user['user_id']; ?>">
+							<input type="hidden" name="friend_id" value="<?= $notification['friend_id']; ?>">
+							<button type="submit" class="btn btn-danger">Decline</button>
+						</form>	
+					</td>
+				</tr>	
+<?	} ?>
 			</tbody>
 		</table>
 
@@ -90,25 +97,33 @@
 			</thead>
 			<tbody>
 <!-- 			<button type='submit' class='btn btn-success' disabled>This User Invited you as friend.</button> -->
-<? 	foreach($users as $user) 
-	{ ?>
+<? 	foreach($friends as $friend)
+   	{ ?>
+   				<tr>
+   					<td><?= $friend['first_name']; ?> <?= $friend['last_name']; ?></td>
+   					<td><?= $friend['email']; ?></td>
+   					<td><button type='submit' class='btn btn-primary' disabled>Friend Invite Sent</button></td>
+   				</tr>
+<?	} 
+
+ 	foreach($users as $user) 
+	{ 
+		if($user['id'] != $logged_in_user['user_id'])
+		{ ?>
 				<tr>
-					<td><?= $user['id']; ?><?= $user['first_name']; ?> <?= $user['last_name']; ?></td>
+					<td><?= $user['first_name']; ?> <?= $user['last_name']; ?></td>
 					<td><?= $user['email']; ?></td>
 					<td>
-
-						<button type='submit' class='btn btn-primary' disabled>Friend Invite Sent</button>	
-
 						<form action="<?= base_url(); ?>friends/add_friend" method="post" class="add_friend">
 							<input type="hidden" name="form_action" value="add_friend">
 							<input type="hidden" name="user_id" value="<?= $logged_in_user['user_id']; ?>">
 							<input type="hidden" name="friend_id" value="<?= $user['id']; ?>">
 							<button type="submit" class="btn btn-primary">Add as Friend</button>
 						</form>	
-
-<?	} ?>
 					</td>
 				</tr>
+<?		}
+	} ?>
 			</tbody>
 		</table>
 	</div>

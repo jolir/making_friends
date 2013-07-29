@@ -35,14 +35,19 @@ class User extends CI_Model {
 			}
 			elseif(is_array($friend_info))
 			{
-				foreach($friend_info as $info)
+				if(!empty($friend_info))
 				{
-					$friends[] = $info['friend_id'];
+					foreach($friend_info as $info)
+					{
+						$friends[] = $info['friend_id'];
+					}
+					
+					return $this->db->where_not_in('id', $friends)
+								->get('users')
+								->result_array();
 				}
-				
-				return $this->db->where_not_in('id', $friends)
-							->get('users')
-							->result_array();
+				else
+					return $this->db->get('users')->result_array();
 			}
 		}
 		else
